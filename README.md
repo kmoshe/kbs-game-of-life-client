@@ -1,1 +1,2 @@
-# kbs-game-of-life-client
+# Game of life client
+

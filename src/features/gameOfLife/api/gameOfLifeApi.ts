@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { apiBaseUrl, nextGenerationUrl, firstGenerationUrl} from '../../../configuration/configuration';
 import { Generation } from '../models/generation';
 import { GetFirstGenerationRequest } from '../models/getFirstGenerationRequest'
 import { GetFirstGenerationResponse } from '../models/getFirstGenerationResponse'
@@ -8,14 +9,14 @@ import { GetNextGenerationResponse } from '../models/getNextGenerationResponse';
 export const gameOfLifeApi = createApi({
     reducerPath: 'gameOfLifeApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:4000'
+        baseUrl: apiBaseUrl
     }),
     endpoints: (builder) => ({
         getFirstGeneration: builder.query<Generation, GetFirstGenerationRequest>({
             query: (request) => {
                 const { rows, columns } = request;
                 return { 
-                    url: '/cells', 
+                    url: firstGenerationUrl, 
                     params: { rows, columns }
                 }
             }, 
@@ -26,7 +27,7 @@ export const gameOfLifeApi = createApi({
         }), 
         getNextGeneration: builder.query<GetNextGenerationResponse, GetNextGenerationRequest>({
             query: (request) => ({
-                url: '/cells/nextGen', 
+                url: nextGenerationUrl,
                 method: 'POST',
                 body: request,
             }),

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from '../../../app/store';
+import { apiBaseUrl, firstGenerationUrl, nextGenerationUrl } from '../../../configuration/configuration';
 import { CellStatus } from '../models/cellStatus';
 import { Generation } from '../models/generation';
 import { GetFirstGenerationRequest } from '../models/getFirstGenerationRequest';
@@ -25,7 +26,7 @@ export const getFirstGeneration = createAsyncThunk(
     'gameOfLife/firstGeneration',
     async (firstGenerationRequest: GetFirstGenerationRequest) => {
         const { rows, columns } = firstGenerationRequest;
-        const response = await axios.get<GetNextGenerationResponse>(`http://localhost:4000/cells?rows=${rows}&columns=${columns}`);
+        const response = await axios.get<GetNextGenerationResponse>(`${apiBaseUrl}${firstGenerationUrl}?rows=${rows}&columns=${columns}`);
         if (response.status === 200) {
             return response.data;
         }
@@ -36,7 +37,7 @@ export const computeNextGeneration = createAsyncThunk(
     'gameOfLife/nextGeneration',
     async (nextGenerationRequest: GetNextGenerationRequest) => {
         try {
-            const response = await axios.post<GetNextGenerationResponse>(`http://localhost:4000/cells/nextGen`, nextGenerationRequest);
+            const response = await axios.post<GetNextGenerationResponse>(`${apiBaseUrl}${nextGenerationUrl}`, nextGenerationRequest);
             return response;
         } catch {
             return null;
